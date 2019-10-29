@@ -1,0 +1,55 @@
+﻿@model YoutubeEntity.Class.Playlist
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-white">Are you sure you want to delete?</h1>
+            </div>
+        </div>
+
+        <div>
+
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+            {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 text-center">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <br />
+                <br />
+                <a href="/playlist/myplaylist/@Session["UserId"]" class="btn btn-info">Back</a>
+            </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

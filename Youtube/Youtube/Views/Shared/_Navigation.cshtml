@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Assets -->
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet" />
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800|Raleway:400,500,700|Roboto:300,400,500,700,900|Ubuntu:300,300i,400,400i,500,500i,700" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="~/Content/css/style.css" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/Content/css/responsive.css" />
+    <!-- Jquery UI -->
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.Scripts IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.Scripts doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+
+
+
+    <link href="~/Content/css/navigation.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+
+
+
+    @RenderSection("styles", false)
+
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container-full">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                    <a id="main-category-toggler" class="hidden-md hidden-lg hidden-md" href="#">
+                        <i class="fa fa-navicon"></i>
+                    </a>
+                    <a id="main-category-toggler-close" class="hidden-md hidden-lg hidden-md" href="#">
+                        <i class="fa fa-close"></i>
+                    </a>
+                    <div id="logo">
+                        <a href="/home/index"><img src="~/Content/images/logo.png" alt=""></a>
+                    </div>
+                </div><!-- // col-md-2 -->
+                <div class="col-lg-3 col-md-3 col-sm-6 hidden-xs hidden-sm">
+                    <div class="search-form">
+                        <form id="search" action="#" method="post">
+                            <input type="text" id="searchByName" placeholder="Search here video posts..." />
+                            <input type="submit" value="Keywords" />
+                        </form>
+                    </div>
+                </div><!-- // col-md-3 -->
+    
+@{
+    if (Session["UserId"] != null)
+    {
+        <input type="hidden" id="UserId" value="@Session["UserId"]"/>
+
+                <div class="col-lg-3 col-md-3 col-sm-5 hidden-xs hidden-sm">
+             
+
+                </div><!-- // col-md-4 -->
+                <div class="col-lg-2 col-md-2 col-sm-4 hidden-xs hidden-sm">
+                    <ul class="notifications">
+                        <li class="dropdown">
+                           
+
+                            
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="fa fa-users"></i>
+                                        <span class="badge badge-color1 header-badge" id="newSub">3</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-friend-requests" id="subscription-info">
+
+                                        @*contents will be added here*@
+
+                                    </ul>
+                           
+                          
+
+
+
+                        </li>
+
+
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="fa fa-bell-o" id="showNotification"></i>
+                                <span class="badge badge-color3 header-badge" id="totalNotification"></span>
+                            </a>
+                            <ul style="overflow:scroll; height:400px;"  class="dropdown-menu dropdown-notifications-items" id="notificationList">
+                                @* <li>
+                <div class="notification-info">
+                    <a href="#">
+                        <i class="fa fa-video-camera color-1"></i>
+                        <strong>Rabie Elkheir</strong> Add a new <span>Video</span>
+                        <h5 class="time">4 hours ago</h5>
+                    </a>
+                </div>
+            </li>
+                                *@
+                                <li>
+                                    <a href="#" class="all_notifications">All Notifications</a>
+                                </li>
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+                            
+          
+                    <div class="col-lg-2 col-md-2 col-sm-3 hidden-xs hidden-sm">
+                        <div class="dropdown">
+                            <a data-toggle="dropdown" href="#" class="user-area">
+                                <div class="thumb"><img src="@Session["UserImage"]" alt=""></div>
+                                <h2>@Session["UserName"]</h2>
+                                <h3>25 subscribers</h3>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu account-menu">
+                                <li><a href="/profile/edit"><i class="fa fa-edit color-1"></i>Edit profile</a></li>
+                                <li><a href="/profile/ChangeProfilePicture"><i class="fa fa-edit color-1"></i>Change Photo</a></li>
+                                <li><a href="/profile/ChangePassword"><i class="fa fa-edit color-1"></i>Change Password</a></li>
+                                <li><a href="/playlist/myplaylist"><i class="fa fa-clock-o"></i>Manage Playlist</a></li>
+                                <li><a href="/channel/MyChannel"> <i class="fa fa-video-camera color-2"></i>My Channel</a></li>
+                                <li><a href="#"><i class="fa fa-star color-3"></i>Favorites</a></li>
+                                <li><a href="/user/logout"><i class="fa fa-sign-out color-4"></i>sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div style="float: right" class="col-lg-2 col-md-2 col-sm-3 hidden-xs hidden-sm">
+                        <a class="h4 text-white text-right"  href="/user/login"><h2>Login</h2> </a>
+                    </div>
+                }
+            }
+
+                
+            </div><!-- // row -->
+
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="searchResult col-md-3">
+                    <ul id="searchedResultViewArea">
+                        
+               
+                    
+                    </ul>
+                </div>
+            </div>
+        </div><!-- // container-full -->
+    </header>
+
+    <div id="main-category">
+        <div class="container-full">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="main-category-menu">
+                        <li class="color-1"><a href="/video/VideoByCategory/Music"><i class="fa fa-music"></i>Music</a></li>
+                        <li class="color-2"><a href="/video/VideoByCategory/Sports"><i class="fa fa-soccer-ball-o"></i>Sports</a></li>
+                        <li class="color-3"><a href="/video/VideoByCategory/Gaming"><i class="fa fa-gamepad"></i>Gaming</a></li>
+                        <li class="color-4"><a href="/video/VideoByCategory/News"><i class="fa fa-globe"></i>News</a></li>
+                        <li class="color-1"><a href="/video/VideoByCategory/Live"><i class="fa fa-play-circle-o"></i>Live</a></li>
+                        <li class="color-2"><a href="/video/VideoByCategory/360"><i class="fa fa-repeat"></i>360° Video</a></li>
+              
+                    </ul>
+                </div><!-- // col-md-14 -->
+            </div><!-- // row -->
+        </div><!-- // container-full -->
+    </div>
+
+    <div class="site-output">
+        <div class="col-md-2 no-padding-left hidden-sm hidden-xs">
+            <div class="left-sidebar">
+                <div id="sidebar-stick">
+                    <ul class="menu-sidebar">
+                        <li><a href="/home/index"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="/video/TrendingVideos"><i class="fa fa-bolt"></i>Trending</a></li>
+                        @{
+                            if (Session["UserId"] != null)
+                            {
+                                
+                                <li><a style="cursor: pointer" id="showmyplaylist"><i class="fa fa-clock-o"></i>Playlist</a></li>
+                      
+
+                                <ul class="text-center" id="myplaylist" style="display:none">
+
+                                  @*content will be here*@
+
+                                </ul>
+
+
+                                <li><a href="14-history.html"><i class="fa fa-clock-o"></i>History</a></li>
+                                <li><a href="/channel/MyChannel"><i class="fa fa-upload"></i>My Channel</a></li>
+                                <li><a href="/Subscription/MySubscriptions"><i class="fa fa-thumbs-o-up"></i>Subscriptions</a></li>
+                            }
+                        }
+                        
+                    </ul>
+
+                    <ul class="menu-sidebar">
+
+                        <li><a href="#"><i class="fa fa-gear"></i>Settings</a></li>
+                        <li><a href="#"><i class="fa fa-question-circle"></i>Help</a></li>
+                        <li><a href="#"><i class="fa fa-send-o"></i>Send feedback</a></li>
+                        <li><a href="/api/Mykeys"><i class="fa fa-lock"></i>API</a></li>
+                        
+                    </ul>
+                </div><!-- // sidebar-stick -->
+                <div class="clear"></div>
+            </div><!-- // left-sidebar -->
+        </div><!-- // col-md-2 -->
+
+        <div class="col-md-10">
+            <div style="margin-bottom:50px;"></div>
+            @RenderBody()
+        </div>
+  
+    </div>
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery.sticky-kit.min.js"></script>
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/imagesloaded.pkgd.min.js"></script>
+    <script src="~/Scripts/grid-blog.min.js"></script>
+
+    <script src="~/Scripts/navigation.js"></script>
+
+    @RenderSection("scripts", false)
+
+</body>
+</html>

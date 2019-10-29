@@ -1,0 +1,39 @@
+﻿@model YoutubeEntity.Class.PlaylistVideo
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-white">Are you sure to Remove this song from this Playlist?</h1>
+            </div>
+        </div>
+        <dl class="dl-horizontal">
+
+            <dt>
+                Song Name
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Video.Title)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color text-center">
+                <input type="hidden" name="PlayListId" value="@Model.PlayListId" />
+                <input type="submit" value="Remove" class="btn btn-danger" />
+            </div>
+        }
+    </div>
+</div>
+        

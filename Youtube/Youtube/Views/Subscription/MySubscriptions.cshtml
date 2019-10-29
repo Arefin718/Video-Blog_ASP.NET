@@ -1,0 +1,103 @@
+﻿@model IEnumerable<YoutubeEntity.Class.Subscription>
+
+@{
+    ViewBag.Title = "MySubscriptions";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+@section styles{
+    
+<link href="~/Content/css/MySubscriptions.css" rel="stylesheet" />
+    }
+
+<div class="container">
+    <div class="col-md-12">
+
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-white">My Subscriptions</h1>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <!-- Local delete button -->
+<div class="row text-center">
+<input type="text" id="SelectedUser"/>
+</div>
+
+<!-- Generic Modal  -->
+<div class="modal fade" id="genericDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title text-danger font-weight-bold" id="exampleModalLabel">Channel Unsubscribe Confirmation</h1>
+      </div>
+      <div class="modal-body">
+
+          </br>
+
+          <span  style="font-weight:bold;">You Are Going to Unsubscribe</span>
+    
+
+        <form class="form-inline text-center">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="confirmDeleteButton" data-dismiss="modal" onclick="unsubscribe(this.value)" value="" class="btn btn-danger">Unsubscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+        <table class="table table-striped">
+            <tr>
+  
+                <th>
+                    Channel Name
+                </th>
+                <th>
+                   
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+
+
+
+                <tr id="status_@item.ChannelId">
+
+                    <td>
+                       <a style="color:blue" href="/video/allvideo/@item.ChannelId">@item.Channel.ChannelName</a> 
+                    </td>
+                    <td class="text-right" >
+                        <button id="unsub" onclick="confirm(@item.ChannelId)" class="btn btn-danger">Unsubscribe</button>
+                    </td>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+   
+    <script src="~/Scripts/subscribe.js"></script>
+    <script src="~/Scripts/MySubscriptions.js"></script>
+
+    }

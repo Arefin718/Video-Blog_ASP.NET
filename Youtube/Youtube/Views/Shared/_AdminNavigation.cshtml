@@ -1,0 +1,70 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/css/adminNavigation.css" rel="stylesheet" />
+
+
+
+    @RenderSection("styles", false)
+
+</head>
+
+
+<body>
+    <div class="container">
+
+       
+
+        <a href="/Admin/Registration" class="btn btn-info">Add Admin</a>
+
+        
+        <a href="/admin/alladmins" class="btn btn-info">All Admins</a>
+        <div class="dropdown">
+            <button class="btn btn-info">Reports</button>
+            <div class="dropdown-content">
+                <a href="/report/GetAllVideosReport">Video Report</a>
+               
+                <a href="/report/GetAllChannelsReport">Channel Report</a>
+            </div>
+        </div>
+		
+
+
+  
+
+		@{
+				if(Session["AdminId"]!=null){
+		
+        <div class="dropdown">
+            <button class="btn btn-info">@Session["AdminName"]</button>
+            <div class="dropdown-content">
+                <a href="/Admin/Edit/@Session["AdminId"]">Edit Profile</a>
+                <a href="#">Change Password</a>
+                <a href="/Admin/Logout">Logout</a>
+               
+            </div>
+        </div>
+		
+		}
+		
+		}
+
+
+
+			
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    @RenderSection("scripts", false)
+
+</body>
+</html>

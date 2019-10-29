@@ -1,0 +1,143 @@
+﻿@model IEnumerable<YoutubeEntity.Class.Video>
+@{
+    ViewBag.Title = "Youtube";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/css/allvideo.css" rel="stylesheet" />
+    <link href="~/Content/css/home-index.css" rel="stylesheet" />
+}
+<div id="all-output" class="col-md-10">
+
+    <div class="container" id="playlistaddstatus">
+
+        <div class="alert alert-success alert-dismissable fade in" style="display:none" id="successAlert">
+            <a href="#" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</a>
+            <strong>Success!</strong> Song added to the Playlist Successfully!!
+        </div>
+
+
+        <div class="alert alert-danger alert-dismissable fade in" style="display:none" id="unsuccessAlert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Danger!</strong> Song is already added to this Playlist
+        </div>
+    </div>
+
+    @{
+        List<string> videoType = new List<string>(new string[] { "News", "Gaming", "Sports", "Music", "Tutorials", "360", "Other" });
+
+        foreach (var cat in videoType)
+        {
+
+            @:<div class="row">
+
+
+            int count = 0;
+            foreach (var item in Model)
+            {
+                if (item.Type == cat)
+                {
+                    count++;
+
+                    if (count == 1)
+                    {
+                        <h1 class="new-video-title"><i class="fa fa-bolt"></i>@cat</h1>
+                    }
+
+                    if (count > 4) { break; }
+
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="video-item">
+                            <div class="thumb">
+                                <div class="hover-efect"></div>
+
+
+                                <small class="time video-duration">10:53</small>
+                                <a href="/video/view/@item.Id">
+
+
+                                    <div id="videosList">
+                                        <div class="video">
+                                            <video width="320" poster="@item.Poster" height="240" class="thevideo uploaded-video" loop preload="none">
+                                                <source src="@item.VideoURL" type="video/mp4">
+                                            </video>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                @{
+                                    if (Session["UserId"] != null)
+                                    {
+
+
+                                        <button class="btn btn-info addtoplaylist" id="addtoplaylist_@item.Id" onclick="songToAddplaylist(@item.Id)">Add to Playlist</button>
+
+                                        <ul class="text-center list-unstyled myplaylisttoaddvideo" id="myplaylisttoaddvideo_@item.Id">
+
+
+                                            @{
+                                                foreach (var play in ViewData["Playlist"] as List<YoutubeEntity.Class.Playlist>)
+                                                {
+
+                                                    <li><button onclick="addtoplaylist(@play.Id,@item.Id)" class="btn btn-primary">@play.Name</button></li>
+
+                                                }
+
+                                            }
+
+
+
+                                        </ul>
+
+
+                                                }
+                                }
+                            </div>
+
+
+
+                            <div class="video-info">
+                                <a href="#" class="title">@item.Title </a>
+                                <a class="channel-name" href="/video/allvideo/@item.ChannelId">
+                                    @item.Channel.ChannelName
+                                    <span>
+                                        <i class="fa fa-check-circle"></i>
+                                    </span>
+                                </a>
+                                <span class="views"><i class="fa fa-eye"></i>@item.ViewCount views </span>
+                                <span class="date"><i class="fa fa-clock-o"></i>@item.UploadTime </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                                                    }
+                                                }
+                                                @:</div>
+
+
+
+
+                                                }
+    }
+
+
+
+
+
+
+    <!-- Loading More Videos -->
+    <div id="loading-more">
+        <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+    </div>
+    <!-- // Loading More Videos -->
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/allvideo.js"></script>
+
+    <script src="~/Scripts/home-index.js"></script>
+}

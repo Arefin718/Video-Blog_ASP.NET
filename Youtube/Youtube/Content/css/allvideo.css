@@ -1,0 +1,16 @@
+﻿#videosList {
+    max-width: 600px;
+    overflow: hidden;
+}
+
+.video {
+   // background-image: url('https://img.youtube.com/vi/nZcejtAwxz4/maxresdefault.jpg');
+   // height: 400px;
+   // width: 400px;
+    margin-bottom: 25px;
+}
+
+/* Hide Play button + controls on iOS */
+video::-webkit-media-controls {
+    display: none !important;
+}

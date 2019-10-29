@@ -1,0 +1,83 @@
+﻿@model IEnumerable<YoutubeEntity.Class.Video>
+
+@{
+    ViewBag.Title = "VideoByCategory";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+@section styles{
+
+    <link href="~/Content/css/allvideo.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1 class="text-white">@ViewData["Category"]</h1>
+    </div>
+</div>
+
+<div id="all-output" class="col-md-10">
+    <h1 class="new-video-title"><i class="fa fa-bolt"></i>Videos(@Model.Count())</h1>
+    <div class="row">
+
+        @{
+            foreach (var item in Model)
+            {
+
+
+        <!-- video-item -->
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="video-item">
+                        <div class="thumb">
+                            <div class="hover-efect"></div>
+                            <small class="time video-duration">10:53</small>
+                            <a href="/video/view/@item.Id">
+
+
+                                <div id="videosList">
+                                    <div class="video">
+                                        <video width="320" height="240" class="thevideo uploaded-video" loop preload="none">
+                                            <source src="@item.VideoURL" type="video/mp4">
+                                        </video>
+                                    </div>
+                                </div>
+
+
+
+                            </a>
+                        </div>
+                        <div class="video-info">
+                            <a href="#" class="title">@item.Title </a>
+                            <a class="channel-name" href="/video/allvideo/@item.ChannelId">
+                                @item.Channel.ChannelName
+                            <span>
+                                <i class="fa fa-check-circle"></i>
+                            </span>
+                        </a>
+                        <span class="views"><i class="fa fa-eye"></i>@item.ViewCount views </span>
+                        <span class="date"><i class="fa fa-clock-o"></i>@item.UploadTime </span>
+                    </div>
+                </div>
+            </div>
+        <!-- // video-item -->
+
+            }
+        }
+
+
+
+
+    </div><!-- // row -->
+    <!-- Loading More Videos -->
+    <div id="loading-more">
+        <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+    </div>
+    <!-- // Loading More Videos -->
+
+</div>
+
+@section scripts{
+
+
+    <script src="~/Scripts/allvideo.js"></script>
+}

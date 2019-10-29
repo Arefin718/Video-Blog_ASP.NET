@@ -1,0 +1,40 @@
+﻿@model IEnumerable<YoutubeEntity.Class.APIKey>
+
+@{
+    ViewBag.Title = "MyKeys";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+<div class="container">
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+
+            <th>
+                API_KEY
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RedirectURL)
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RedirectURL)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>

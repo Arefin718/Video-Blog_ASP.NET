@@ -1,0 +1,9 @@
+﻿.myplaylisttoaddvideo {
+    display: none;
+    width: 220px;
+    padding-top: 5px;
+}
+
+.myplaylisttoaddvideo ul li{
+    padding-bottom: 5px;
+}

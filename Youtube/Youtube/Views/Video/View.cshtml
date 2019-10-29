@@ -1,0 +1,379 @@
+﻿@model YoutubeEntity.Class.Video
+
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+@section styles{
+    
+<link href="~/Content/css/vplayer/vplayer.css" rel="stylesheet" />
+<style>
+    #likeordislike {
+        font-size: 50px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #likeordislike:hover {
+        color: darkblue;
+    }
+</style>
+    }
+
+
+@{ 
+    var Comment = ViewData["Comment"] as List<YoutubeEntity.Class.Comment>;
+}
+
+<div id="all-output" class="col-md-10">
+    <div class="row">
+        <!-- Watch -->
+        <div class="col-md-8">
+            <div id="watch">
+
+                <!-- Video Player -->
+                <h1 class="video-title">@Model.Title</h1>
+				  @{
+                    if (Session["UserId"] != null && Convert.ToInt32(Session["UserId"]) != Model.Id)
+                    {
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Report</button>
+                    }
+                }
+                <div class="video-code">
+                  @*  <iframe width="100%" height="415" src="https://www.youtube.com/embed/e452W2Kj-yg" frameborder="0" allowfullscreen></iframe>*@
+
+
+
+                    <video id="videoarea" autoplay controls="controls" poster="@Model.Poster" src="" onended="nextsongToPLay(@Model.Id)"></video>
+
+
+                    <ul id="playlist" style="display:none">
+                        <li movieurl="@Model.VideoURL">Happy Fit</li>
+
+                        @{ 
+                            foreach(var playlistItem in ViewData["CategoryVideo"] as List<YoutubeEntity.Class.Video>)
+                            {
+                               <li class="songOfPlaylist" id="@playlistItem.Id" movieurl="@playlistItem.VideoURL"></li>
+
+                            }
+                        }
+
+
+                    
+                    </ul>
+
+
+
+
+
+
+                </div><!-- // video-code -->
+
+                <div class="video-share">
+                    <ul class="">
+                        @*<li><a class="like" href="#">1250 <i class="fa fa-thumbs-up"></i></a></li>
+                       <li><a class="deslike" href="#">1250 <i class="fa fa-thumbs-down"></i></a></li>*@
+                    </ul>
+                    <ul class="social_link">
+                        <li><a class="facebook" href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a class="youtube" href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li><a class="google" href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li><a class="twitter" href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a class="rss" href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                    </ul><!-- // Social -->
+                </div><!-- // video-share -->
+                <!-- // Video Player -->
+                <!-- Chanels Item -->
+                <div class="chanel-item">
+                    <div class="chanel-thumb">
+                        <a href="/video/allvideo/@Model.Channel.Id"><img style="height:90px; border-radius: 50%;" src="@Model.Channel.ChannelImage" /></a>
+                    </div>
+                    <div class="chanel-info">
+                        <a class="title" href="#">@Model.Channel.ChannelName</a>
+                        <span class="subscribers"><span id="noOfSubscriber">@ViewData["TotalSubscriber"]</span></s> subscribers</span>
+                        
+                        <div class="views float-right"><i class="fa fa-eye"></i>@Model.ViewCount views </div>
+                        <div class="date float-right"><i class="fa fa-clock-o"></i>@Model.UploadTime </div>
+
+                        <hr />
+
+
+                       @{ 
+                           if (TempData["ReactStatus"] == null)
+                           {
+                            <i onclick="UpdateReact(this,@Model.Id,@Convert.ToInt32(Session["UserId"]))" id="likeordislike" class="fa fa-thumbs-down"></i>
+                           }
+                           else
+                           {
+                            <i onclick="UpdateReact(this,@Model.Id,@Convert.ToInt32(Session["UserId"]))" id="likeordislike" class="fa fa-thumbs-up"></i>
+
+                           }
+                    }
+
+
+
+                           <hr />
+
+                        <p>@Model.Description</p>
+
+                    </div>
+
+                    <input type="hidden" id="UserToNotify" value="@Model.Channel.UserId"/>
+                    
+
+
+                    <div class="chanel-info pull-right">
+                        <span>
+                            @{
+                                if (Session["UserId"] != null)
+                                {
+                                    if (Convert.ToInt32(Session["UserId"]) != Model.Channel.UserId)
+                                    {
+
+
+                                        if (Convert.ToString(TempData["SubscriptionStatus"]) == "True")
+                                        {
+                                            <button id="unsub" onclick="subscribe(@Model.Channel.Id)" class="btn btn-danger">Unsubscribe</button>
+                                        }
+                                        else
+                                        {
+                                            <button id="sub" onclick="subscribe(@Model.Channel.Id)" class="btn btn-info">Subscribe</button>
+                                        }
+
+
+                                    }
+                                }
+                            }
+
+                        </span>
+                    </div>
+    
+
+
+
+                </div>
+                <!-- // Chanels Item -->
+
+
+
+            @*add comments*@
+
+
+                <div id="respond" class="comment-respond">
+                    <h5 class="comment-form__title mb-40">Leave a Comment</h5>
+                    <form id="commentform" class="comment-form">
+                        <p class="comment-form-comment">
+                            <input type="hidden" id="PostId" value="@Model.Id" />
+                            <input type="hidden" id="UserId" value="@Convert.ToInt32(Session["UserId"])" />
+                            <input type="hidden" id="Time" value="@DateTime.Now.ToString()" />
+                            <input placeholder="Write your comment here..." style="height:40px" type="text" class="form-control"  id="CommentDescription" required="required" />
+                        </p>
+
+                    </form>
+                </div>
+
+
+
+                <!-- Comments -->
+                <div id="comments" class="post-comments">
+                    <h3 class="post-box-title"><span>(@Comment.Count()) </span> Comments</h3>
+                    <ul class="comments-list">
+    <li id="comment-display-area">
+
+    </li>
+
+
+            <ui class="children">
+                <li id="dynamiccommentreplydiv_" style="display:none">
+                    <form id="dynamiccommentreplyform_" class="comment-form">
+                        <p class="comment-form-comment">
+                            <input type="hidden" id="PostId_" value="@Model.Id" />
+                            <input type="hidden" id="UserId_" value="@Convert.ToInt32(Session["UserId"])" />
+                            <input type="hidden" id="Time_" value="@DateTime.Now.ToString()" />
+                            <input type="hidden" id="ParentCommentId_" value="" />
+                            <input onclick="this.select()"  placeholder="Dynamic reply" style="height:40px" type="text" class="form-control" id="CommentDescription_" required="required" />
+                        </p>
+                    </form>
+                </li>
+            </ui>
+
+
+                        <li id="dynamiccomment-display-area">
+
+                        </li>
+
+    @{
+
+
+        foreach (var comment in Comment)
+        {
+            if (comment.ParentCommentId == null)
+            {
+                <li id="comment-display-area">
+                    <div class="post_author">
+                        <div class="img_in">
+                            <a href="#"><img src="@comment.User.Image" alt=""></a>
+                        </div>
+                        <a href="#" class="author-name">@comment.User.Name</a>
+                        <time datetime="2017-03-24T18:18">@comment.CommentTime</time>
+                    </div>
+                    <p>@comment.CommentContent</p>
+                    <a onclick="commentreply(@comment.Id)" style="cursor:pointer" class="reply">Reply</a>
+                </li>
+
+                    @:<ul class="children" id="replyforthecomment_@comment.Id">
+           
+                foreach (var commentReply in Comment)
+                {
+                    if (comment.Id == commentReply.ParentCommentId)
+                    {
+           
+
+                        //reply
+                            <li>
+                                <div class="post_author">
+                                    <div class="img_in">
+                                        <a href="#"><img src="@commentReply.User.Image" alt=""></a>
+                                    </div>
+                                    <a href="#" class="author-name">@commentReply.User.Name</a>
+                                    <time datetime="2017-03-24T18:18">@commentReply.CommentTime</time>
+                                </div>
+                                <p>@commentReply.CommentContent</p>
+                                @*<a onclick="commentreply()" class="reply">Reply</a>*@
+                         </li>
+
+                    }
+
+                }
+
+                @:</ul>
+
+
+            }
+
+
+
+
+
+                    <ui class="children">
+                <li id="commentreplydiv_@comment.Id" style="display:none">
+                    <form id="commentreplyform_@comment.Id" class="comment-form">
+                        <p class="comment-form-comment">
+                            <input type="hidden" id="PostId_@comment.Id" value="@Model.Id" />
+                            <input type="hidden" id="UserId_@comment.Id" value="@Convert.ToInt32(Session["UserId"])" />
+                            <input type="hidden" id="Time_@comment.Id" value="@DateTime.Now.ToString()" />
+                            <input type="hidden" id="ParentCommentId_@comment.Id" value="@comment.Id" />
+                            <input onclick="this.select()" onKeyDown="if (event.keyCode == 13) commentreplysubmit(@comment.Id,@comment.UserId);" placeholder="Write your reply here..." style="height:40px" type="text" class="form-control" id="CommentDescription_@comment.Id" required="required" />
+                        </p>
+
+                    </form>
+                </li>
+            </ui>
+            }
+            }
+
+
+        </ul>
+
+
+                </div>
+                <!-- // Comments -->
+
+
+            </div><!-- // watch -->
+        </div><!-- // col-md-8 -->
+        <!-- // Watch -->
+        <!-- Related Posts-->
+        <div class="col-md-4">
+            <div id="related-posts">
+                <h1 class="text-info">Related Videos</h1>
+
+                @{ 
+                    foreach(var item in ViewData["CategoryVideo"] as List<YoutubeEntity.Class.Video>)
+                    {
+
+
+                <!-- video item -->
+                <div class="related-video-item">
+                    <div class="thumbp">
+                        <a href="/video/view/@item.Id">
+                            <div class="video">
+                                <video width="200" height="200" poster="@item.Poster">
+                                    <source src="@item.VideoURL" type="video/mp4">
+                                </video>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="#" class="title">@item.Title</a>
+                    <a class="channel-name" href="/video/allvideo/@item.ChannelId">
+                        @item.Channel.ChannelName<span>
+                            <i class="fa fa-check-circle"></i>
+                        </span>
+                    </a>
+                </div>
+
+                    }
+                }
+
+
+            </div>
+        </div><!-- // col-md-4 -->
+        <!-- // Related Posts -->
+    </div><!-- // row -->
+</div>
+@*Report Modal Start*@
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Report</h4>
+            </div>
+            <form id="report-form" class="report-form">
+                <div class="modal-body">
+
+                    <p>Some text in the modal.</p>
+                    <input type="hidden" id="reportedId" value="@Model.Id" />
+                    <input type="hidden" id="UserId_report" value="@Convert.ToInt32(Session["UserId"])" />
+                    <input type="hidden" id="Time_report" value="@DateTime.Now.ToString()" />
+                    <input type="hidden" id="type" value="video" />
+
+                    <input type="radio" name="content" value="Spam" required="required" />Spam<br />
+                    <input type="radio" name="content" value="Piracy" required="required" />Piracy<br />
+                    <input type="radio" name="content" value="Copyright" required="required" />Copyright<br />
+                </div>
+                <div>
+                    <textarea id="reportDetails" name="details" required="required"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" onclick="submitReport()" id="reportButton" class="btn btn-default" data-dismiss="">Report</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+@*Report Modal End*@
+
+@section scripts{
+
+<script src="~/Scripts/vplayer/vplayer.js"></script>
+<script src="~/Scripts/allvideo.js"></script>
+<script src="~/Scripts/video-view.js"></script>
+  <script src="~/Scripts/report.js"></script>
+<script src="~/Scripts/comment.js"></script>
+
+<script src="~/Scripts/react.js"></script>
+
+
+
+}

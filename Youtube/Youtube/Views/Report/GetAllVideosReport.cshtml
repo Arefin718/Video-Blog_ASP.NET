@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Youtube.Models.VIdeoReportViewModel>
+
+@{
+    ViewBag.Title = "GetAllVideosReport";
+    Layout = "~/Views/Shared/_AdminNavigation.cshtml";
+}
+
+@section styles{
+
+<link href="~/Content/css/admin-report-switch.css" rel="stylesheet" />
+}
+
+<div class="container">
+
+    <h2>GetAllVideosReport</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ttile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChannelName)
+            </th>
+            <th>Total View</th>
+            <th>Total Reports</th>
+            <th>Details</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <a style="color: blue; cursor: pointer" href="/video/view/@item.VideoId">@Html.DisplayFor(modelItem => item.Ttile)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChannelName)
+                </td>
+
+          
+                <td>@item.TotalView</td>
+                <td>@item.TotalReports</td>
+          
+
+                <td>
+                    <a style="color: blue; cursor: pointer" href="/report/video/@item.VideoId">Details</a>
+                </td>
+                <td>
+                  
+                    @{
+                        if (item.Approve == 0)
+                        {
+                            <label class="switch">
+                                <input onclick="VideoApprovalStatusChange(@item.VideoId)" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        }
+                        else
+                        {
+                            <label class="switch">
+                                <input checked onclick="VideoApprovalStatusChange(@item.VideoId)" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        }
+                    }
+
+
+
+
+
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+@section scripts{
+<script src="~/Scripts/adminaction.js"></script>
+}

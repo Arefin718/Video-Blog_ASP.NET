@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from nilethemes.com/html/video-post/07-log_in_page.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 10 Dec 2017 17:36:51 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Video Post – Video Sharing HTML Template</title>
+    <meta name="keywords" content="Blog website templates" />
+    <meta name="description" content="Author - Personal Blog Wordpress Template">
+    <meta name="author" content="Rabie Elkheir">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
+    <!-- Owl Carousel Assets -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800|Raleway:400,500,700|Roboto:300,400,500,700,900|Ubuntu:300,300i,400,400i,500,500i,700" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="~/Content/css/style.css" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/Content/css/responsive.css" />
+    <link href="~/Content/css/user-login.css" rel="stylesheet" />
+
+</head>
+
+<body class="log_in_page">
+    <!--======= log_in_page =======-->
+    <div id="log-in" class="site-form log-in-form">
+
+        <div id="log-in-head">
+            <h1>Log in</h1>
+            <div id="logo"><a href="01-home.html"><img src="img/logo.png" alt=""></a></div>
+        </div>
+
+        <div class="form-output">
+            <form method="post">
+                <div class="form-group label-floating">
+                    <label class="control-label">Your Email</label>
+                    <input class="form-control" name="Email" placeholder="" type="email">
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Your Password</label>
+                    <input class="form-control" name="Password" placeholder="" type="password">
+                </div>
+
+                <div class="form-group label-floating">
+                    <label class="control-label h5 text-danger">@TempData["ErrorMessage"] </label>
+                </div>
+
+                
+                <div class="remember">
+                    <div class="checkbox">
+                        <label>
+                            <input name="optionsCheckboxes" type="checkbox">
+                            Remember Me
+                        </label>
+                    </div>
+                    <a href="/ForgetPassword/recover" class="forgot">Forgot my Password</a>
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-primary full-width">Login</button>
+
+                <div class="or"></div>
+
+                <a href="#" id="GoogleLogin" onclick="login()" class="btn bg-danger btn-lg bg-facebook full-width btn-icon-left"><i class="fa fa-google-plus" aria-hidden="true"></i>Login with Google</a>
+
+                @*<a href="#" class="btn btn-lg bg-twitter full-width btn-icon-left"><i class="fa fa-twitter" aria-hidden="true"></i>Login with Twitter</a>*@
+
+
+                <p>Don't you have an account? <a href="/user/registration">Register Now!</a> </p>
+            </form>
+        </div>
+
+
+
+
+
+
+        @*social login*@
+
+        <button style="display:none" id="popUpOpen" class="btn" data-popup-open="popup-1"></button>
+
+
+        <div class="popup" data-popup="popup-1">
+
+
+            <div class="popup-inner">
+
+                <form style="display:inline" method="post" action="/SocialLogin/GoogleLogin">
+
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h2 class="bg-dark text-white">Your Profile will Look like</h2>
+                            <div><img id="imgHolder" style="height:120px;width:120px;" /></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <span class="h4"><b>Name: </b><span id="userName"></span></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="h4"><b>Email: </b><span id="userEmail"></span></span>
+                    </div>
+
+
+                    <div class="row">
+                        <label class="h4 text-center text-primary"><b>Password: </b></label>
+                        <input style="width: 320px" type="text" required placeholder="Enter a password to get started..." name="Password" />
+                        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+                    </div>
+
+                    <input type="hidden" id="googleName" name="Name" />
+                    <input type="hidden" id="googleEmail" name="Email" />
+                    <input type="hidden" id="googleImage" name="Image" />
+
+
+
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <input type="submit" class="btn btn-primary" style="font-size:15px;" value="Sign Up" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p class="text-primary">*Your can edit your Profile later from "Profile>Edit"</p>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    <!--======= // log_in_page =======-->
+</body>
+
+
+
+</html>
+
+
+
+<script>
+        $("#dialog").dialog({
+            dialogClass: "no-close",
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+</script>
+
+<script src="~/Scripts/user-login.js"></script>
+<script src="~/Scripts/google-sign-in.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+

@@ -1,0 +1,61 @@
+﻿@model YoutubeEntity.Class.User
+
+@{
+    ViewBag.Title = "ChangeProfilePicture";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-white">Profile Edit</h1>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("ChangeProfilePicture", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+         
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Name)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.Password)
+                @Html.HiddenFor(model => model.SocialLink)
+                @Html.HiddenFor(model => model.Address)
+
+                @{
+                    if (Model.Image != null)
+                    {
+                        <div class="form-group">
+                            <img src="@Model.Image" />
+                        </div>
+                    }
+                }
+
+             
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input type="file" name="Image" required />
+                    </div>
+               </div>
+
+           
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

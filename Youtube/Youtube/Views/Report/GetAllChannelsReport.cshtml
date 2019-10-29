@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Youtube.Models.ChannelReportList>
+
+@{
+    ViewBag.Title = "GetAllChannelsReport";
+    Layout = "~/Views/Shared/_AdminNavigation.cshtml";
+}
+@section styles{
+
+    <link href="~/Content/css/admin-report-switch.css" rel="stylesheet" />
+}
+
+<div class="container">
+
+    <h2>GetAllChannelsReport</h2>
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ChannelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChannelId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalReports)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalSubscribers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                 <a href="/video/mychannel/@item.ChannelId">@Html.DisplayFor(modelItem => item.ChannelName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChannelId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalReports)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalSubscribers)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @{
+                        if (item.Status == 0)
+                        {
+                            <label class="switch">
+                                <input onclick="ChannelStatusChange(@item.ChannelId)" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        }
+                        else
+                        {
+                            <label class="switch">
+                                <input checked onclick="ChannelStatusChange(@item.ChannelId)" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        }
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/adminaction.js"></script>
+}

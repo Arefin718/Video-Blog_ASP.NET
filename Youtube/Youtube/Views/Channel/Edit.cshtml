@@ -1,0 +1,83 @@
+﻿@model YoutubeEntity.Class.Channel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-white">Profile Edit</h1>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Channel</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.Status)
+                @Html.HiddenFor(model => model.ChannelImage)
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChannelName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ChannelName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ChannelName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChannelDetails, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ChannelDetails, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ChannelDetails, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChannelType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select class="form-control" name="ChannelType">
+                            <option>@Model.ChannelType</option>
+
+                            @{
+                                List<string> videoType = new List<string>(new string[] { "News", "Gaming", "Sports", "Music", "Tutorials", "360", "Other" });
+
+                                foreach (var type in videoType)
+                                {
+                                    if (type != @Model.ChannelType)
+                                    {
+                                        <option>@type</option>;
+                                    }
+                                }
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>

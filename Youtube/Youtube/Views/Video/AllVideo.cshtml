@@ -1,0 +1,219 @@
+﻿@model IEnumerable<YoutubeEntity.Class.Video>
+
+@{
+    ViewBag.Title = "AllVideo";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+@{
+    var channel = ViewData["Channel"] as YoutubeEntity.Class.Channel;
+}
+
+@section styles{
+
+    <link href="~/Content/css/allvideo.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <p class="text-white">
+            <img src="@channel.ChannelImage" style="height: 200px; width: 200px; border-radius: 50%;" />
+            <h1>@channel.ChannelName</h1>
+        </p>
+
+
+        @{
+            if (Session["UserId"] != null)
+            {
+                if (Convert.ToInt32(Session["UserId"]) != channel.UserId)
+                {
+
+
+                    if (Convert.ToString(TempData["SubscriptionStatus"]) == "True")
+                    {
+                        <button id="unsub" onclick="subscribe(@channel.Id)" class="btn btn-danger">Unsubscribe</button>
+                    }
+                    else
+                    {
+                        <button id="sub" onclick="subscribe(@channel.Id)" class="btn btn-info">Subscribe</button>
+                    }
+
+
+                }
+
+            }
+            if (Session["UserId"] != null && Convert.ToInt32(Session["UserId"]) != channel.UserId)
+            {
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Report</button>
+            }
+        }
+
+
+    </div>
+</div>
+
+
+
+
+
+@{
+    if (Session["UserId"] != null)
+    {
+        if (Convert.ToInt32(Session["UserId"]) == channel.UserId)
+        {
+
+            <p><a style="color:blue" href="/video/Insert/">Upload New Video</a> </p>
+
+        }
+    }
+}
+
+
+
+<div id="all-output" class="col-md-10">
+    <h1 class="new-video-title"><i class="fa fa-bolt"></i> Uploaded Videos (@Model.Count())</h1>
+    <div class="row">
+
+        @{
+            foreach (var item in Model)
+            {
+
+
+        <!-- video-item -->
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="video-item">
+                        <div class="thumb">
+                            <div class="hover-efect"></div>
+
+                            <small class="time video-duration">10:53</small>
+                            <a href="/video/view/@item.Id">
+
+                                <div id="videosList">
+                                    <div class="video">
+                                        @{
+                                            if (@item.Status == 0)
+                                            {
+                                                <video id="privatePoster_@item.Id" width="320" poster="~/Content/images/private.png" height="240">
+                                                    <source src="@item.VideoURL" type="video/mp4">
+                                                </video>
+                                            }
+                                            else
+                                            {
+                                                <video id="publicPoster_@item.Id" width="320" poster="@item.Poster" height="240" class="thevideo uploaded-video" loop preload="none">
+                                                    <source src="@item.VideoURL" type="video/mp4">
+                                                </video>
+                                            }
+                                        }
+
+
+
+
+                                    </div>
+                                </div>
+
+
+
+                            </a>
+
+
+                            @{
+                                if (Session["UserId"] != null)
+                                {
+                                    if (Convert.ToInt32(Session["UserId"]) == item.Channel.UserId)
+                                    {
+                                        <a href="/video/edit/@item.Id" class="btn btn-info btn-sm">Edit</a>
+                                        <a href="/video/delete/@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        if (@item.Status == 1)
+                                        {
+                                            <button id="private_@item.Id"  class="btn btn-warning" onclick="Private(@item.Id)">Private</button>
+
+                                        }
+                                        else
+                                        {
+
+                                            <button id="public_@item.Id"  class="btn btn-success" onclick="Private(@item.Id)">Public</button>
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+
+                        </div>
+                        <div class="video-info">
+                            <a href="#" class="title">@item.Title </a>
+                            <a class="channel-name" href="/video/allvideo/@item.ChannelId">
+                                @item.Channel.ChannelName
+                            <span>
+                                <i class="fa fa-check-circle"></i>
+                            </span>
+                        </a>
+                        <span class="views"><i class="fa fa-eye"></i>@item.ViewCount views </span>
+                        <span class="date"><i class="fa fa-clock-o"></i>@item.UploadTime </span>
+                    </div>
+                </div>
+            </div>
+        <!-- // video-item -->
+
+                                }
+        }
+
+
+
+
+    </div><!-- // row -->
+    <!-- Loading More Videos -->
+    <div id="loading-more">
+        <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+    </div>
+    <!-- // Loading More Videos -->
+
+</div>
+@*Report Modal Start*@
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Report</h4>
+            </div>
+            <form id="report-form" class="report-form">
+                <div class="modal-body">
+
+                    <p>Some text in the modal.</p>
+                    <input type="hidden" id="reportedId" value="@channel.Id" />
+                    <input type="hidden" id="UserId_report" value="@Convert.ToInt32(Session["UserId"])" />
+                    <input type="hidden" id="Time_report" value="@DateTime.Now.ToString()" />
+                    <input type="hidden" id="type" value="channel" />
+
+                    <input type="radio" name="content" value="Crime" required="required" />Crime<br />
+                    <input type="radio" name="content" value="Pornography" required="required" />Pornography<br />
+                    <input type="radio" name="content" value="Copyright" required="required" />Copyright<br />
+                    <input type="radio" name="content" value="spreading hate" required="required" />spreading hate<br />
+                </div>
+                <div>
+                    <textarea id="reportDetails" name="details" required="required"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" onclick="submitReport()" id="reportButton" class="btn btn-default" data-dismiss="">Report</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+@*Report Modal End*@
+@section scripts{
+
+    <script src="~/Scripts/allvideo.js"></script>
+<script src="~/Scripts/subscribe.js"></script>
+    <script src="~/Scripts/report.js"></script>
+
+}

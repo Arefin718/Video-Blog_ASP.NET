@@ -1,0 +1,24 @@
+﻿.searchResult {
+    color: white;
+    position: fixed;
+    z-index: 100;
+    left: 17%;
+    top: 7%;
+}
+
+.searchResult ul li{
+    list-style-type: none;
+    background-color: gray;
+    border-bottom: 1px solid white;
+}
+
+.searchResult ul li img{
+       width: 60px;
+       height: 60px;
+}
+    
+.searchResult ul li span{
+    padding-left: 20px;
+    color:white;
+}
+

@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Navigation.cshtml";
+}
+
+
+
+<h2>Client ID: <span style="color: red; padding-left: 7px">@ViewData["ClientId"]</span></h2>
+
+<div class="container">
+    <p>You can use your client id to sign-in in your own app.</p>
+    <p>All public data will be provided</p>
+    <br />
+    <h4>Request Format For authentication</h4>
+    <br />
+    <h4>HTML</h4>
+    <code><xmp><button onclick="login()">Login with</button></xmp> </code>
+
+    <br />
+    <h4>JS</h4>
+
+    <code><xmp><script>
+        function login() {
+            var clientId = "";
+            window.open("http://localhost:62210/API/Login/" + clientId, "contestrules", "menubar=0,resizable=0,width=350,height=350");
+        }
+
+
+</script></xmp> </code>
+
+
+</div>
